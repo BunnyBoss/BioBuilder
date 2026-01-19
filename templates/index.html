@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BioBuilder - Scientific Document Analysis</title>
     <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="/static/css/chat.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div class="app-container">
         <!-- Header -->
@@ -24,7 +27,7 @@
             <!-- Left Panel: Upload & Documents -->
             <section class="panel documents-panel">
                 <h2>📄 Documents</h2>
-                
+
                 <!-- Upload Zone -->
                 <div class="upload-zone" id="uploadZone">
                     <div class="upload-icon">📁</div>
@@ -63,19 +66,31 @@
                 </div>
 
                 <!-- Q&A Mode -->
+                <!-- Q&A Mode -->
                 <div class="mode-content" id="qaMode">
-                    <div class="input-group">
-                        <textarea 
-                            id="questionInput" 
-                            placeholder="Ask a question about your documents..."
-                            rows="3"
-                        ></textarea>
-                        <button class="btn btn-primary" id="askBtn" onclick="askQuestion()">
-                            Ask Question
-                        </button>
-                    </div>
-                    <div class="results-container" id="qaResults">
-                        <p class="placeholder-text">Upload documents and ask a question to get started</p>
+                    <div class="chat-container">
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="chat-message bot-message">
+                                <div class="message-content">
+                                    Hello! Upload a document and ask me anything about it.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="quick-actions" id="quickActions">
+                            <button class="action-chip" onclick="triggerExtraction()">
+                                <span class="chip-icon">🧬</span>
+                                Extract Genes & Proteins
+                            </button>
+                        </div>
+
+                        <div class="chat-input-area">
+                            <textarea id="questionInput" placeholder="Ask a question about your documents..."
+                                rows="1"></textarea>
+                            <button class="btn btn-primary btn-icon" id="askBtn" onclick="askQuestion()">
+                                <span class="send-icon">➤</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -83,15 +98,49 @@
                 <div class="mode-content hidden" id="extractionMode">
                     <div class="extraction-info">
                         <p>Extract genes, proteins, and their biological relationships from your documents.</p>
-                        <p class="info-types">
-                            <strong>Relationship types:</strong> Phosphorylation, Methylation, Transcription, Binding, Activation, Inhibition, Expression
-                        </p>
+
+                        <!-- Pre-Extraction Filters -->
+                        <div class="filters-section">
+                            <details>
+                                <summary>🔬 Advanced Filters (Optional)</summary>
+                                <div class="filter-inputs">
+                                    <div class="input-group">
+                                        <label for="targetGenes">Target Entities (comma separated):</label>
+                                        <input type="text" id="targetGenes" placeholder="e.g. p53, Mdm2, Akt">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="targetRelations">Target Relations (comma separated):</label>
+                                        <input type="text" id="targetRelations"
+                                            placeholder="e.g. phosphorylation, inhibition">
+                                    </div>
+                                </div>
+                            </details>
+                        </div>
                     </div>
+
                     <button class="btn btn-primary btn-large" id="extractBtn" onclick="extractGenes()">
                         🧬 Extract Genes & Proteins
                     </button>
+
+                    <!-- Post-Extraction Tools -->
+                    <div class="results-toolbar hidden" id="resultsToolbar">
+                        <div class="search-bar">
+                            <input type="text" id="filterInput" placeholder="🔍 Filter results..."
+                                onkeyup="filterResults()">
+                        </div>
+                        <div class="export-actions">
+                            <button class="btn btn-secondary btn-sm" onclick="exportResults('csv')">
+                                ⬇ CSV
+                            </button>
+                            <button class="btn btn-secondary btn-sm" onclick="exportResults('json')">
+                                ⬇ JSON
+                            </button>
+                        </div>
+                    </div>
+
                     <div class="results-container" id="extractionResults">
-                        <p class="placeholder-text">Upload documents and click extract to find genes and relationships</p>
+                        <p class="placeholder-text">Upload documents and click extract to find genes and relationships
+                        </p>
                     </div>
                 </div>
             </section>
@@ -106,4 +155,5 @@
 
     <script src="/static/js/app.js"></script>
 </body>
+
 </html>

@@ -1,0 +1,32 @@
+ENTITIES
+Name,Type,Description
+"Mdm2","protein","Oncoprotein that binds p53, inhibits its transcriptional activity, promotes nuclear export, and acts as an E3 ubiquitin ligase targeting p53 for degradation."
+"p53","protein","Tumor suppressor that regulates transcription of genes involved in apoptosis, cell‑cycle arrest, senescence and DNA repair."
+"Akt","protein","Serine/threonine kinase in the PTEN/PI3K pathway that phosphorylates multiple substrates including Mdm2."
+"ATM","protein","DNA‑damage response kinase that phosphorylates Mdm2 and p53 after ionizing radiation."
+"c-Abl","protein","Tyrosine kinase that phosphorylates Mdm2 on Tyr393 after DNA damage."
+"PTEN","protein","Phosphatase that opposes PI3K/AKT signaling."
+"PI3K","protein","Phosphoinositide 3‑kinase upstream of AKT in growth‑factor signaling."
+"KRAS G12D","protein","Oncogenic KRAS mutant that drives lung cancer in mouse models."
+"p16","protein","Cyclin‑dependent kinase inhibitor that is a marker of cellular senescence."
+"p21","protein","Cyclin‑dependent kinase inhibitor transcriptionally activated by p53."
+"Sestrin-1","protein","p53‑target gene involved in oxidative stress response."
+"Sestrin-2","protein","p53‑target gene involved in oxidative stress response."
+"Pai-1","protein","p53‑target gene encoding plasminogen activator inhibitor‑1."
+"Pai-2","protein","p53‑target gene encoding plasminogen activator inhibitor‑2."
+
+RELATIONSHIPS
+Source,Target,Type,Description,Evidence
+"Akt","Mdm2","phosphorylation","Akt phosphorylates Mdm2 at serine 183, increasing nuclear Mdm2 stability and decreasing p53 levels.","""Akt phosphorylation of Mdm2 serine residue 183 increases nuclear Mdm2 stability, decreases p53 levels, and prevents senescence..."""
+"ATM","Mdm2","phosphorylation","ATM phosphorylates Mdm2 on serine 394, markedly altering Mdm2 and p53 protein levels.","""ATM phosphorylation of Mdm2 on serine residue 394 can greatly alter Mdm2 and p53 protein levels..."""
+"c-Abl","Mdm2","phosphorylation","c‑Abl phosphorylates Mdm2 on tyrosine 393 after DNA damage.","""c‑Abl kinase is also capable of phosphorylating Mdm2 after DNA damage on tyrosine residue 393..."""
+"Akt","Mdm2","phosphorylation","Akt phosphorylates human MDM2 at Ser166 and/or Ser186, promoting nuclear translocation.","""AKT phosphorylation of MDM2 at either Ser166 and/or Ser186 promotes MDM2 translocation into the nucleus..."""
+"Mdm2","p53","binding","Mdm2 complexes with p53 and sterically inhibits its transcriptional activity.","""Mdm2 complexes with p53 and sterically inhibits p53 transcriptional activity"""
+"Mdm2","p53","inhibition","Through binding, Mdm2 inhibits p53 transcriptional activity.","""Mdm2 complexes with p53 and sterically inhibits p53 transcriptional activity"""
+"Mdm2","p53","localization","Mdm2 promotes p53 nuclear export.","""Mdm2 also inhibits p53 activities by promoting p53 nuclear export"""
+"Mdm2","p53","degradation","Mdm2 acts as an E3 ubiquitin ligase that ubiquitinates p53 for proteasomal degradation.","""Mdm2 ... acts as an E3 ubiquitin ligase to target p53 for 26S proteasomal degradation"""
+"p53","Mdm2","transcription","p53 transactivates Mdm2 gene expression, creating a feedback loop.","""Since Mdm2 gene expression is also transactivated by p53..."""
+"ATM","p53","phosphorylation","ATM phosphorylates p53 after DNA damage.","""effector kinases such as ATM can phosphorylate p53 after DNA damage"""
+"Akt","Mdm2","localization","Akt‑mediated phosphorylation drives Mdm2 nuclear translocation.","""AKT phosphorylation of MDM2 ... promotes MDM2 translocation into the nucleus"""
+"Akt","p53","inhibition","Akt‑mediated phosphorylation of Mdm2 enhances Mdm2’s ability to ubiquitinate and degrade p53, lowering p53 levels.","""AKT-mediated phosphorylation of MDM2 has also been reported to enhance MDM2’s ability to ubiquitinate and degrade p53"""
+"Akt","p53","inhibition","Akt phosphorylation of Mdm2 at Ser183 inhibits p53‑mediated senescence.","""Akt phosphorylation of Mdm2 protein at Ser183 inhibits p53-mediated senescence"""

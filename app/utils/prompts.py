@@ -49,6 +49,21 @@ Be thorough and extract ALL mentioned genes/proteins and their relationships.
 Only output the JSON, no additional text."""
 
 
+def get_extraction_prompt(target_genes: list[str] | None = None, target_relations: list[str] | None = None) -> str:
+    """Customize extraction prompt based on targets"""
+    prompt = GENE_EXTRACTION_PROMPT
+    
+    if target_genes:
+        genes_str = ", ".join(target_genes)
+        prompt += f"\n\nIMPORTANT: Focus ONLY on relationships involving these specific entities: {genes_str}. Do not extract other unrelated entities."
+        
+    if target_relations:
+        rels_str = ", ".join(target_relations)
+        prompt += f"\n\nIMPORTANT: Extract ONLY these specific relationship types: {rels_str}."
+        
+    return prompt
+
+
 QA_WITH_CONTEXT_PROMPT = """Based on the following scientific document(s), answer the user's question.
 
 DOCUMENTS:

@@ -10,6 +10,8 @@ router = APIRouter()
 class ExtractionRequest(BaseModel):
     document_ids: list[str] | None = None
     model: str | None = None
+    target_genes: list[str] | None = None
+    target_relations: list[str] | None = None
 
 
 class Entity(BaseModel):
@@ -49,7 +51,12 @@ async def extract_genes(request: ExtractionRequest):
         )
     
     # Extract genes and relations
-    result = await extract_genes_and_relations(text, model=request.model)
+    result = await extract_genes_and_relations(
+        text, 
+        model=request.model,
+        target_genes=request.target_genes,
+        target_relations=request.target_relations
+    )
     
     # Count documents used
     if request.document_ids:

@@ -9,6 +9,7 @@ const API_BASE = '';
 let documents = [];
 let selectedModel = '';
 let currentMode = 'qa';
+let currentExtractionData = null; // Store for export/filtering
 
 // DOM Elements
 const uploadZone = document.getElementById('uploadZone');
@@ -189,17 +190,20 @@ function switchMode(mode) {
 async function askQuestion() {
     const question = questionInput.value.trim();
 
-    if (!question) {
-        alert('Please enter a question');
-        return;
-    }
+    if (!question) return;
 
     if (documents.length === 0) {
         alert('Please upload at least one document first');
         return;
     }
 
-    showLoading('Analyzing documents...');
+    // Add user message
+    addMessage(question, 'user');
+    questionInput.value = '';
+    questionInput.style.height = 'auto'; // Reset height
+
+    // Show typing indicator
+    const typingId = showTypingIndicator();
 
     try {
         const response = await fetch(`${API_BASE}/api/qa/ask`, {
@@ -211,45 +215,118 @@ async function askQuestion() {
             })
         });
 
+        removeMessage(typingId);
+
         if (!response.ok) {
             const error = await response.json();
             throw new Error(error.detail || 'Failed to get answer');
         }
 
         const data = await response.json();
-        renderAnswer(data);
+        addMessage(data.answer, 'bot');
     } catch (error) {
-        qaResults.innerHTML = `<p style="color: var(--error);">Error: ${error.message}</p>`;
-    } finally {
-        hideLoading();
+        removeMessage(typingId);
+        addMessage(`Error: ${error.message}`, 'bot');
     }
 }
 
-// Render answer
-function renderAnswer(data) {
-    qaResults.innerHTML = `
-        <div class="answer-content">${formatText(data.answer)}</div>
-        <div class="answer-meta">
-            Model: ${data.model_used} | Documents used: ${data.documents_used}
+// Add chat message
+function addMessage(text, sender) {
+    const chatMessages = document.getElementById('chatMessages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `chat-message ${sender}-message`;
+
+    // Format content with converting newlines to <br> and bold text
+    const formattedText = formatText(text);
+
+    messageDiv.innerHTML = `
+        <div class="message-content">
+            ${formattedText}
         </div>
     `;
+
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    return messageDiv.id = 'msg-' + Date.now();
+}
+
+// Show typing indicator
+function showTypingIndicator() {
+    const chatMessages = document.getElementById('chatMessages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'chat-message bot-message typing-indicator';
+    messageDiv.innerHTML = `
+        <div class="message-content">
+            <span class="typing-dots">Thinking...</span>
+        </div>
+    `;
+
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    const id = 'typing-' + Date.now();
+    messageDiv.id = id;
+    return id;
+}
+
+// Remove message (for typing indicator)
+function removeMessage(id) {
+    const el = document.getElementById(id);
+    if (el) el.remove();
+}
+
+// Trigger extraction from chat
+window.triggerExtraction = function () {
+    console.log('Triggering extraction...');
+    if (documents.length === 0) {
+        alert('Please upload documents first.');
+        return;
+    }
+
+    switchMode('extraction');
+    // Small delay to allow UI to switch
+    setTimeout(() => {
+        extractGenes();
+    }, 100);
 }
 
 // Extract genes
+// Extract genes
 async function extractGenes() {
+    console.log('Starting extraction...');
     if (documents.length === 0) {
         alert('Please upload at least one document first');
         return;
     }
 
-    showLoading('Extracting genes and proteins... This may take a moment.');
+    const extractBtn = document.getElementById('extractBtn');
+    const originalBtnText = extractBtn.innerHTML;
+
+    // Get pre-extraction filters
+    const targetGenesInput = document.getElementById('targetGenes').value;
+    const targetRelationsInput = document.getElementById('targetRelations').value;
+
+    const targetGenes = targetGenesInput ? targetGenesInput.split(',').map(s => s.trim()).filter(Boolean) : null;
+    const targetRelations = targetRelationsInput ? targetRelationsInput.split(',').map(s => s.trim()).filter(Boolean) : null;
+
+    // Set button loading state
+    extractBtn.disabled = true;
+    extractBtn.innerHTML = `
+        <span class="loading-spinner-small"></span>
+        Extracting...
+    `;
+
+    // Clear previous results and hide toolbar
+    extractionResults.innerHTML = '<div class="processing-message">Analyzing documents for biological entities and relationships...</div>';
+    document.getElementById('resultsToolbar').classList.add('hidden');
 
     try {
         const response = await fetch(`${API_BASE}/api/extraction/genes`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                model: selectedModel || null
+                model: selectedModel || null,
+                target_genes: targetGenes,
+                target_relations: targetRelations
             })
         });
 
@@ -259,12 +336,92 @@ async function extractGenes() {
         }
 
         const data = await response.json();
+        currentExtractionData = data; // Store for export
         renderExtractionResults(data);
+
+        // Show toolbar if results exist
+        if (data.entities.length > 0 || data.relations.length > 0) {
+            document.getElementById('resultsToolbar').classList.remove('hidden');
+        }
     } catch (error) {
+        console.error('Extraction error:', error);
         extractionResults.innerHTML = `<p style="color: var(--error);">Error: ${error.message}</p>`;
     } finally {
-        hideLoading();
+        // Restore button state
+        extractBtn.disabled = false;
+        extractBtn.innerHTML = originalBtnText;
     }
+}
+
+// Filter results (Client-side)
+function filterResults() {
+    const query = document.getElementById('filterInput').value.toLowerCase();
+
+    // Filter entities
+    document.querySelectorAll('.entity-card').forEach(card => {
+        const name = card.querySelector('.entity-name').textContent.toLowerCase();
+        const type = card.querySelector('.entity-type').textContent.toLowerCase();
+
+        if (name.includes(query) || type.includes(query)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+
+    // Filter relations
+    document.querySelectorAll('.relation-card').forEach(card => {
+        const text = card.textContent.toLowerCase();
+        if (text.includes(query)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+// Export results
+function exportResults(format) {
+    if (!currentExtractionData) return;
+
+    const data = currentExtractionData;
+    let content = '';
+    let filename = `bio_extraction_${new Date().toISOString().slice(0, 10)}`;
+    let mimeType = 'text/plain';
+
+    if (format === 'json') {
+        content = JSON.stringify(data, null, 2);
+        filename += '.json';
+        mimeType = 'application/json';
+    } else if (format === 'csv') {
+        // Create CSV content
+        // Entities table
+        content += 'ENTITIES\n';
+        content += 'Name,Type,Description\n';
+        data.entities.forEach(e => {
+            content += `"${e.name}","${e.type}","${e.description ? e.description.replace(/"/g, '""') : ''}"\n`;
+        });
+
+        content += '\nRELATIONSHIPS\n';
+        content += 'Source,Target,Type,Description,Evidence\n';
+        data.relations.forEach(r => {
+            content += `"${r.source}","${r.target}","${r.type}","${r.description ? r.description.replace(/"/g, '""') : ''}","${r.evidence ? r.evidence.replace(/"/g, '""') : ''}"\n`;
+        });
+
+        filename += '.csv';
+        mimeType = 'text/csv';
+    }
+
+    // Trigger download
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 }
 
 // Render extraction results
