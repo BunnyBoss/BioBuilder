@@ -1,8 +1,9 @@
 """Q&A router"""
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from app.services import document_processor
-from app.services.llm_client import chat_completion
+from app.services.llm_client import chat_completion, stream_chat_completion
 from app.utils.prompts import QA_WITH_CONTEXT_PROMPT
 
 router = APIRouter()
@@ -54,4 +55,31 @@ async def ask_question(request: QuestionRequest):
         answer=answer,
         model_used=request.model or "default",
         documents_used=docs_used
+    )
+
+
+@router.post("/ask_stream")
+async def ask_question_stream(request: QuestionRequest):
+    """Ask a question about the uploaded documents with streaming response"""
+    
+    # Get document text
+    context = document_processor.get_combined_text(request.document_ids)
+    
+    if not context:
+        raise HTTPException(
+            status_code=400,
+            detail="No documents available. Please upload documents first."
+        )
+    
+    # Prepare prompt with context
+    system_prompt = QA_WITH_CONTEXT_PROMPT.format(context=context)
+    
+    messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": request.question}
+    ]
+    
+    return StreamingResponse(
+        stream_chat_completion(messages, model=request.model),
+        media_type="text/plain"
     )

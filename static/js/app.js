@@ -21,6 +21,7 @@ const qaResults = document.getElementById('qaResults');
 const extractionResults = document.getElementById('extractionResults');
 const loadingOverlay = document.getElementById('loadingOverlay');
 const loadingText = document.getElementById('loadingText');
+const streamToggle = document.getElementById('streamToggle');
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -206,7 +207,10 @@ async function askQuestion() {
     const typingId = showTypingIndicator();
 
     try {
-        const response = await fetch(`${API_BASE}/api/qa/ask`, {
+        const isStreaming = streamToggle.checked;
+        const endpoint = isStreaming ? `${API_BASE}/api/qa/ask_stream` : `${API_BASE}/api/qa/ask`;
+
+        const response = await fetch(endpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -215,15 +219,40 @@ async function askQuestion() {
             })
         });
 
-        removeMessage(typingId);
-
         if (!response.ok) {
+            removeMessage(typingId);
             const error = await response.json();
             throw new Error(error.detail || 'Failed to get answer');
         }
 
-        const data = await response.json();
-        addMessage(data.answer, 'bot');
+        if (isStreaming) {
+            removeMessage(typingId);
+            // Create a new empty bot message
+            const msgId = addMessage('', 'bot');
+            const messageMsg = document.getElementById(msgId);
+            const contentDiv = messageMsg.querySelector('.message-content');
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let fullText = '';
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                const chunk = decoder.decode(value, { stream: true });
+                fullText += chunk;
+                contentDiv.innerHTML = formatText(fullText);
+
+                // Scroll to bottom
+                const chatMessages = document.getElementById('chatMessages');
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        } else {
+            removeMessage(typingId);
+            const data = await response.json();
+            addMessage(data.answer, 'bot');
+        }
     } catch (error) {
         removeMessage(typingId);
         addMessage(`Error: ${error.message}`, 'bot');

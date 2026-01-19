@@ -1476,3 +1476,275 @@ Note: Anonymous requests to text.pollinations.ai are NOT affected and will conti
 2026-01-19 16:55:50,297 - INFO - HTTP Request: POST http://0.0.0.0:4000/chat/completions "HTTP/1.1 200 OK"
 2026-01-19 17:56:13,417 - INFO - HTTP Request: POST http://0.0.0.0:4000/chat/completions "HTTP/1.1 200 OK"
 2026-01-19 17:57:15,770 - INFO - HTTP Request: POST http://0.0.0.0:4000/chat/completions "HTTP/1.1 404 Not Found"
+2026-01-19 20:32:09,574 - INFO - HTTP Request: GET http://0.0.0.0:4000/models "HTTP/1.1 200 OK"
+2026-01-19 20:32:57,720 - INFO - HTTP Request: POST http://0.0.0.0:4000/chat/completions "HTTP/1.1 200 OK"
+2026-01-19 20:33:17,206 - INFO - HTTP Request: POST http://0.0.0.0:4000/chat/completions "HTTP/1.1 200 OK"
+2026-01-19 20:33:57,245 - INFO - HTTP Request: POST http://0.0.0.0:4000/chat/completions "HTTP/1.1 200 OK"
+2026-01-19 20:34:30,988 - INFO - Using model: nvidia-gpt-oss-120b
+2026-01-19 20:34:30,988 - INFO - Input text length: 15014
+2026-01-19 20:34:30,988 - INFO - Sending request to LLM...
+2026-01-19 20:34:45,223 - INFO - HTTP Request: POST http://0.0.0.0:4000/chat/completions "HTTP/1.1 200 OK"
+2026-01-19 20:34:45,225 - INFO - Received response from LLM
+2026-01-19 20:34:45,225 - INFO - Raw Response: {
+  "entities": [
+    {
+      "name": "Mdm2",
+      "type": "protein",
+      "aliases": ["MDM2", "Mdm2 oncoprotein"],
+      "description": "E3 ubiquitin ligase that complexes with p53, inhibits its transcriptional activity, promotes nuclear export and degradation."
+    },
+    {
+      "name": "Akt",
+      "type": "protein",
+      "aliases": ["AKT", "Akt kinase", "PKB"],
+      "description": "Serine/threonine kinase in the PTEN/PI3K pathway that regulates cell growth, apoptosis and DNA repair."
+    },
+    {
+      "name": "p53",
+      "type": "protein",
+      "aliases": ["TP53", "tumor suppressor p53"],
+      "description": "Transcription factor that induces apoptosis, cell‑cycle arrest, senescence and DNA repair."
+    },
+    {
+      "name": "ATM",
+      "type": "protein",
+      "aliases": ["Ataxia‑telangiectasia mutated"],
+      "description": "DNA‑damage effector kinase that phosphorylates substrates such as Mdm2 and p53."
+    },
+    {
+      "name": "c-Abl",
+      "type": "protein",
+      "aliases": ["ABL1", "c‑Abl kinase"],
+      "description": "Tyrosine kinase that phosphorylates Mdm2 after DNA damage."
+    },
+    {
+      "name": "PTEN",
+      "type": "protein",
+      "aliases": [],
+      "description": "Phosphatase that opposes PI3K signaling upstream of Akt."
+    },
+    {
+      "name": "PI3K",
+      "type": "protein",
+      "aliases": ["phosphoinositide 3‑kinase"],
+      "description": "Kinase that activates Akt as part of the PTEN/PI3K pathway."
+    },
+    {
+      "name": "KRAS",
+      "type": "protein",
+      "aliases": ["KRAS G12D"],
+      "description": "Oncogenic GTPase driving lung cancer in mouse models."
+    },
+    {
+      "name": "p21",
+      "type": "protein",
+      "aliases": ["CDKN1A"],
+      "description": "Cyclin‑dependent kinase inhibitor and p53 transcriptional target."
+    },
+    {
+      "name": "p16",
+      "type": "protein",
+      "aliases": ["CDKN2A"],
+      "description": "Cyclin‑dependent kinase inhibitor associated with senescence."
+    },
+    {
+      "name": "Pai‑1",
+      "type": "protein",
+      "aliases": ["SERPINE1"],
+      "description": "p53‑target gene encoding plasminogen activator inhibitor‑1."
+    },
+    {
+      "name": "Pai‑2",
+      "type": "protein",
+      "aliases": ["SERPINE2"],
+      "description": "p53‑target gene encoding plasminogen activator inhibitor‑2."
+    },
+    {
+      "name": "Sestrin‑1",
+      "type": "protein",
+      "aliases": ["SESN1"],
+      "description": "p53‑target gene involved in oxidative stress response."
+    },
+    {
+      "name": "Sestrin‑2",
+      "type": "protein",
+      "aliases": ["SESN2"],
+      "description": "p53‑target gene involved in oxidative stress response."
+    }
+  ],
+  "relations": [
+    {
+      "source": "Akt",
+      "target": "Mdm2",
+      "type": "phosphorylation",
+      "description": "Akt phosphorylates Mdm2 at serine 183, increasing nuclear Mdm2 stability.",
+      "evidence": "Akt phosphorylation of Mdm2 serine residue 183 increases nuclear Mdm2 stability..."
+    },
+    {
+      "source": "Akt",
+      "target": "Mdm2",
+      "type": "phosphorylation",
+      "description": "Akt phosphorylates human MDM2 at Ser166 and/or Ser186, promoting nuclear translocation and reducing p53‑dependent transcription.",
+      "evidence": "AKT phosphorylation of MDM2 at either Ser166 and/or Ser186 promotes MDM2 translocation into the nucleus ... and reduces p53‑dependent gene trans‑activation."
+    },
+    {
+      "source": "ATM",
+      "target": "Mdm2",
+      "type": "phosphorylation",
+      "description": "ATM phosphorylates Mdm2 on serine 394, markedly altering Mdm2 and p53 protein levels.",
+      "evidence": "ATM phosphorylation of Mdm2 on serine residue 394 can greatly alter Mdm2 and p53 protein levels..."
+    },
+    {
+      "source": "c-Abl",
+      "target": "Mdm2",
+      "type": "phosphorylation",
+      "description": "c‑Abl phosphorylates Mdm2 on tyrosine 393 after DNA damage, influencing p53 functions.",
+      "evidence": "The c‑Abl kinase is also capable of phosphorylating Mdm2 after DNA damage on tyrosine residue 393..."
+    },
+    {
+      "source": "ATM",
+      "target": "p53",
+      "type": "phosphorylation",
+      "description": "ATM phosphorylates p53 following DNA damage.",
+      "evidence": "effector kinases such as ATM can phosphorylate p53 after DNA damage."
+    },
+    {
+      "source": "Mdm2",
+      "target": "p53",
+      "type": "binding",
+      "description": "Mdm2 complexes with p53 and sterically inhibits its transcriptional activity.",
+      "evidence": "Mdm2 oncoprotein, which complexes with p53 and sterically inhibits p53 transcriptional activity."
+    },
+    {
+      "source": "Mdm2",
+      "target": "p53",
+      "type": "inhibition",
+      "description": "Mdm2 promotes p53 nuclear export, reducing its transcriptional function.",
+      "evidence": "Mdm2 also inhibits p53 activities by promoting p53 nuclear export."
+    },
+    {
+      "source": "Mdm2",
+      "target": "p53",
+      "type": "degradation",
+      "description": "Mdm2 acts as an E3 ubiquitin ligase that ubiquitinates p53, targeting it for 26S proteasomal degradation.",
+      "evidence": "Mdm2 also inhibits p53 activities by ... acting as an E3 ubiquitin ligase to target p53 for 26S proteasomal degradation."
+    },
+    {
+      "source": "p53",
+      "target": "Mdm2",
+      "type": "transcription",
+      "description": "p53 transactivates the Mdm2 gene, creating a feedback loop.",
+      "evidence": "Since Mdm2 gene expression is also transactivated by p53, subsequent Mdm2‑p53 signaling helps p53 functions return to normal..."
+    },
+    {
+      "source": "Akt",
+      "target": "p53",
+      "type": "inhibition",
+      "description": "Akt‑mediated phosphorylation of Mdm2 enhances Mdm2’s ability to ubiquitinate and degrade p53, lowering p53 levels.",
+      "evidence": "AKT‑mediated phosphorylation of MDM2 has also been reported to enhance MDM2’s ability to ubiquitinate and degrade p53."
+    },
+    {
+      "source": "Akt",
+      "target": "cell growth",
+      "type": "activation",
+      "description": "Akt promotes cell growth and proliferation.",
+      "evidence": "In keeping with literature highlighting a role for Akt in promoting cell growth."
+    },
+    {
+      "source": "Akt",
+      "target": "Mdm2",
+      "type": "localization",
+      "description": "Phosphorylation of Mdm2 by Akt increases its nuclear localization.",
+      "evidence": "AKT phosphorylation of MDM2 at either Ser166 and/or Ser186 promotes MDM2 translocation into the nucleus."
+    },
+    {
+      "source": "Akt",
+      "target": "p53‑mediated senescence",
+      "type": "inhibition",
+      "description": "Akt phosphorylation of Mdm2 at Ser183 inhibits p53‑mediated senescence.",
+      "evidence": "Akt phosphorylation of Mdm2 serine residue 183 ... prevents senescence in primary cells exposed to ROS."
+    },
+    {
+      "source": "Mdm2",
+      "target": "p53‑mediated senescence",
+      "type": "inhibition",
+      "description": "Mdm2 stability (enhanced by Akt phosphorylation) reduces p53 levels and thus senescence.",
+      "evidence": "Akt phosphorylation of Mdm2 ... decreases p53 levels, and prevents senescence..."
+    },
+    {
+      "source": "Akt‑Mdm2‑p53 signaling",
+      "target": "ROS‑induced tumorigenesis",
+      "type": "activation",
+      "description": "The pathway promotes Kras G12D‑driven lung cancers and other ROS‑induced tumors.",
+      "evidence": "Mdm2 phosphorylation by Akt reduces senescence to promote Kras G12D‑driven lung cancers and carcinogen‑induced papilloma and hepatocellular carcinomas."
+    },
+    {
+      "source": "KRAS G12D",
+      "target": "lung cancer",
+      "type": "activation",
+      "description": "Oncogenic KRAS G12D drives lung tumor formation in mouse models.",
+      "evidence": "promote Kras G12D‑driven lung cancers..."
+    },
+    {
+      "source": "p21",
+      "target": "Mdm2S183A MEFs",
+      "type": "expression",
+      "description": "p21 protein levels are significantly elevated in Mdm2 S183A mutant cells under high oxygen.",
+      "evidence": "The level of p53, phosphorylated p53 (S18), p21, and p16 proteins were significantly elevated in Mdm2S183AMEFs..."
+    },
+    {
+      "source": "p16",
+      "target": "Mdm2S183A MEFs",
+      "type": "expression",
+      "description": "p16 protein levels are significantly elevated in Mdm2 S183A mutant cells under high oxygen.",
+      "evidence": "The level of p53, phosphorylated p53 (S18), p21, and p16 proteins were significantly elevated in Mdm2S183AMEFs..."
+    },
+    {
+      "source": "Pai‑1",
+      "target": "Mdm2S183A MEFs",
+      "type": "expression",
+      "description": "mRNA levels of the p53 target Pai‑1 are significantly elevated in Mdm2 S183A cells under high oxygen.",
+      "evidence": "mRNA levels of p53 targets p21, Pai‑1, Pai‑2, ... were significantly elevated in Mdm2S183A MEFs compared to WT MEFs at high oxygen."
+    },
+    {
+      "source": "Pai‑2",
+      "target": "Mdm2S183A MEFs",
+      "type": "expression",
+      "description": "mRNA levels of the p53 target Pai‑2 are significantly elevated in Mdm2 S183A cells under high oxygen.",
+      "evidence": "mRNA levels of p53 targets p21, Pai‑1, Pai‑2, ... were significantly elevated in Mdm2S183A MEFs compared to WT MEFs at high oxygen."
+    },
+    {
+      "source": "Sestrin‑1",
+      "target": "Mdm2S183A MEFs",
+      "type": "expression",
+      "description": "mRNA levels of Sestrin‑1 are not significantly changed, indicating selective regulation.",
+      "evidence": "mRNA levels of p53 targets ... Sestrin‑1, and Sestrin‑2, were significantly elevated in Mdm2S183A MEFs..."
+    },
+    {
+      "source": "Sestrin‑2",
+      "target": "Mdm2S183A MEFs",
+      "type": "expression",
+      "description": "mRNA levels of Sestrin‑2 are not significantly changed, indicating selective regulation.",
+      "evidence": "mRNA levels of p53 targets ... Sestrin‑1, and Sestrin‑2, were significantly elevated in Mdm2S183A MEFs..."
+    },
+    {
+      "source": "MK‑2206",
+      "target": "Akt",
+      "type": "inhibition",
+      "description": "MK‑2206 is an Akt inhibitor that reduces proliferation of wild‑type MEFs.",
+      "evidence": "inhibiting Akt with MK‑2206 reduced the proliferation of WT MEFs."
+    },
+    {
+      "source": "Doxorubicin",
+      "target": "Akt",
+      "type": "activation",
+      "description": "Doxorubicin can activate Akt, leading to impaired DNA repair and radiosensitization.",
+      "evidence": "Akt can be activated by DNA damaging agents, including IR and chemotherapeutic agents such as doxorubicin..."
+    }
+  ]
+}
+2026-01-19 21:11:06,746 - INFO - HTTP Request: GET http://0.0.0.0:4000/models "HTTP/1.1 200 OK"
+2026-01-19 21:11:20,946 - INFO - HTTP Request: POST http://0.0.0.0:4000/chat/completions "HTTP/1.1 200 OK"
+2026-01-19 21:11:36,444 - INFO - HTTP Request: POST http://0.0.0.0:4000/chat/completions "HTTP/1.1 200 OK"
+2026-01-19 21:11:46,698 - INFO - HTTP Request: POST http://0.0.0.0:4000/chat/completions "HTTP/1.1 200 OK"
+2026-01-19 21:11:58,926 - INFO - HTTP Request: POST http://0.0.0.0:4000/chat/completions "HTTP/1.1 200 OK"

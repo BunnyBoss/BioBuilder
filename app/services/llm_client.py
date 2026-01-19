@@ -49,3 +49,27 @@ async def list_models() -> list[dict]:
         })
     
     return chat_models
+
+
+def stream_chat_completion(
+    messages: list[dict],
+    model: str = None,
+    temperature: float = 0.7,
+    max_tokens: int = 2000
+):
+    """Send chat completion request to LiteLLM proxy with streaming"""
+    client = get_client()
+    model = model or DEFAULT_MODEL
+    
+    response = client.chat.completions.create(
+        model=model,
+        messages=messages,
+        temperature=temperature,
+        max_tokens=max_tokens,
+        stream=True
+    )
+    
+    for chunk in response:
+        content = chunk.choices[0].delta.content
+        if content:
+            yield content
